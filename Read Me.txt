@@ -1,0 +1,35 @@
+=== Janji ===
+Saya Davin mengerjakan evaluasi Tugas Masa Depan dalam mata kuliah 
+Desain dan Pemrograman Berorientasi Objek untuk keberkahanNya maka saya 
+tidak melakukan kecurangan seperti yang telah dispesifikasikan. Aamiin.
+
+=== Untuk Kompilasi ===
+javac -cp C:\Users\User\.m2\repository\com\mysql\mysql-connector-j\8.0.33\mysql-connector-j-8.0.33.jar config/DatabaseConfig.java model/*.java viewData/*.java  viewModel/*.java view/*.java TMD_DPBO_Davin_C1.java
+
+java -cp C:\Users\User\.m2\repository\com\mysql\mysql-connector-j\8.0.33\mysql-connector-j-8.0.33.jar;. TMD_DPBO_Davin_C1
+
+ganti C:\Users\User\... dengan lokasi dimana mysql-connector-j berada di proyek maven-nya
+
+atau download maven katanya
+
+=== Mengapa MVVM ===
+
+1.	Proyek mandiri
+	MVVM dan MVP tidak jauh berbeda. Hanya, MVP menggunakan kontrak dan satu presenter hanya untuk satu view. Dimana MVVM tidak ada kontrak dan satu viewModel boleh untuk beberapa view dan sebaliknya. Sehingga, pengerjaan lebih cepat menggunakan MVVM
+
+2.	Tampilan data
+	MVVM bersifat event-based, artinya bereaksi/ berubah sesaui event. Sehingga, data2 yang ada merupakan data terbaru. Bila ada data yang berubah, maka tampilan akan berubah sesaui dengan perubahan data
+
+=== Untuk alur ===
+Main memanggil MyGame.
+MyGame memiliki windowView, MainMenuView, dan juga GameView.
+windowView dapat ditukar isinya dengan MainMenuView atau GameView.
+Bila ditukar dengan MainMenuView, akan menampilkan menu.
+Bila ditukar dengan GameView, maka akan menampilkan game.
+Akan menampilkan Main menu secara default
+
+MainMenuView akan memanggil MainMenuViewModel.
+MainMenuViewModel dapat memanggil model UserTable untuk mengambil data2 dari basis data. Data2 yang diambil model akan disimpan di dalam MainMenuViewModel pada variable data. MainMenuView akan mengambil data2 dari MainMenuViewModel bila membutuhkannya. Bila play, maka view akan memanggil viewModel untuk mengurusnya, dimana user akan masuk ke dalam game melalui metode menukar tampilan dan mengoper nama user. Adapun bila nama user belum ada di basis data, maka akan membuat user baru terlebih dahulu.
+
+GameView memiliki inputHandler, instance of WindowView, nama user, dan GameViewModel.
+Saat diinstansiasi, view akan menginstansiasi viewModel. Lalu, viewModel akan mengambil data user dengan nama yang dikirimkan. Kemudian, view juga akan mengirimkan ukuran window ke dalam viewModel agar viewModel tidak perlu meminta lagi. View juga dikenakan pendengar input inputHandler. View terdiri dari tiga proses utama: start, render, dan run. Start untuk memulai game dengan threads. Render untuk menampilkan gambar2, dan run untuk menjalankan game loop utama. Render Di saat render, akan meminta data2 mengenai player, blocks, score, dan standing dari viewModel. Adapun hanya meminta data2 yang berkaitan dengan tampilan (x, y, width, height) atau apa yang akan ditampilkan (score, standing). Di game loop, akan menyuruh viewModel untuk mengupdate game state dan memeriksa apakah sudah game over. View akan meminta status game over dari viewModel. Bila true, maka progress user akan disave oleh viewModel lalu akan muncul dialog box: restart atau exit. Bila restart, akan memulai dari awal dengan data user terakhir, bila exit maka akan balik ke main menu. Adapun delay digunakan untuk menghindari ThreadException.
